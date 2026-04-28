@@ -1,10 +1,78 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý Sinh viên</title>
+    <link rel="stylesheet" th:href="@{/assets/css/style.css}">
+
 </head>
 <body>
-$END$
+    <div class="container">
+        <h2>Quản lý Sinh viên</h2>
+        
+        <div th:if="${error}" class="error-message" th:text="${error}"></div>
+        
+        <div class="toolbar">
+            <form method="get" th:action="@{/students}" class="search-box">
+                <input type="text" name="keyWord" th:value="${keyword}" placeholder="Tìm theo tên hoặc mã sinh viên...">
+                <button type="submit" class="btn btn-secondary">Tìm kiếm</button>
+            </form>
+            <a href="/create" class="btn btn-primary">+ Thêm mới</a>
+        </div>
+
+        <div th:if="${list.size() > 0}">
+            <table>
+                <thead>
+                    <tr>
+                        <th>
+                            <a th:href="@{/students(keyWord=${keyword}, sortBy='studentCode', dir=${sortBy == 'studentCode' && dir == 'asc' ? 'desc' : 'asc'})}">
+                                Mã SV
+                                <span class="sort-indicator" th:if="${sortBy == 'studentCode'}" th:text="${dir == 'asc' ? '' : 'desc'}"></span>
+                            </a>
+                        </th>
+                        <th>
+                            <a th:href="@{/students(keyWord=${keyword}, sortBy='fullName', dir=${sortBy == 'fullName' && dir == 'asc' ? 'desc' : 'asc'})}">
+                                Họ và tên
+                                <span class="sort-indicator" th:if="${sortBy == 'fullName'}" th:text="${dir == 'asc' ? 'desc' : 'asc'}"></span>
+                            </a>
+                        </th>
+                        <th>Email</th>
+                        <th>Ngành</th>
+                        <th>
+                            <a th:href="@{/students(keyWord=${keyword}, sortBy='gpa', dir=${sortBy == 'gpa' && dir == 'asc' ? 'desc' : 'asc'})}">
+                                GPA
+                                <span class="sort-indicator" th:if="${sortBy == 'gpa'}" th:text="${dir == 'asc' ? 'desc' : 'asc'}"></span>
+                            </a>
+                        </th>
+                        <th>Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="student : ${list}">
+                        <td th:text="${student.studentCode}"></td>
+                        <td th:text="${student.fullName}"></td>
+                        <td th:text="${student.email}"></td>
+                        <td th:text="${student.major}"></td>
+                        <td th:text="${#numbers.formatDecimal(student.gpa, 1, 2)}"></td>
+                        <td>
+                            <div class="actions">
+                                <a th:href="@{/edit/{id}(id=${student.id})}" class="btn btn-warning btn-sm">Sửa</a>
+                                <form method="post" th:action="@{/delete/{id}(id=${student.id})}" style="display: inline;" 
+                                      onsubmit="return confirm('Bạn chắc chắn muốn xóa sinh viên này?');">
+                                    <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div th:if="${list.size() == 0}" class="empty-state">
+            <p>Không có sinh viên nào trong hệ thống.</p>
+            <a href="/create" class="btn btn-primary">+ Thêm sinh viên mới</a>
+        </div>
+    </div>
 </body>
 </html>

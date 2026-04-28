@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biểu mẫu Sinh viên</title>
+    <link rel="stylesheet" th:href="@{/assets/css/style.css}">
+</head>
+<body>
+    <div class="container">
+        <h2 th:text="${student.id == null ? 'Thêm mới Sinh viên' : 'Sửa Sinh viên'}"></h2>
+        
+        <div th:if="${error}" class="error-message" th:text="${error}"></div>
+
+        <form method="post" th:action="@{/save}">
+            <input type="hidden" name="id" th:value="${student.id}" />
+
+            <div class="form-group">
+                <label for="studentCode">Mã Sinh viên <span class="required">*</span></label>
+                <input type="text" id="studentCode" name="studentCode" th:value="${student.studentCode}" 
+                       placeholder="VD: SV1234" maxlength="100" required>
+                <div class="form-note">Bắt buộc, độ dài từ 5 đến 100 ký tự (VD: SV1 + 4 chữ số)</div>
+            </div>
+
+            <div class="form-group">
+                <label for="fullName">Họ và tên <span class="required">*</span></label>
+                <input type="text" id="fullName" name="fullName" th:value="${student.fullName}" 
+                       placeholder="Nhập họ và tên đầy đủ" maxlength="100" required>
+                <div class="form-note">Bắt buộc, độ dài từ 5 đến 100 ký tự</div>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email <span class="required">*</span></label>
+                <input type="email" id="email" name="email" th:value="${student.email}" 
+                       placeholder="vd@example.com" maxlength="100" required>
+                <div class="form-note">Bắt buộc, định dạng email hợp lệ (có @ và :)</div>
+            </div>
+
+            <div class="form-group">
+                <label for="major">Ngành <span class="required">*</span></label>
+                <select id="major" name="major" required>
+                    <option value="">-- Chọn ngành --</option>
+                    <option value="CNTT" th:selected="${student.major == 'CNTT'}">Công Nghệ Thông Tin</option>
+                    <option value="KHDL" th:selected="${student.major == 'KHDL'}">Khoa học Dữ liệu</option>
+                    <option value="Kinh tế" th:selected="${student.major == 'Kinh tế'}">Kinh tế</option>
+                    <option value="Ngoại ngữ" th:selected="${student.major == 'Ngoại ngữ'}">Ngoại ngữ</option>
+                </select>
+                <div class="form-note">Bắt buộc, chọn một trong các ngành được liệt kê</div>
+            </div>
+
+            <div class="form-group">
+                <label for="gpa">GPA <span class="required">*</span></label>
+                <input type="number" id="gpa" name="gpa" th:value="${student.gpa}" 
+                       placeholder="VD: 3.5" min="0" max="10" step="0.1" required>
+                <div class="form-note">Bắt buộc, từ 0.0 đến 10.0 (thang điểm 10)</div>
+            </div>
+
+            <div class="form-buttons">
+                <button type="submit" class="btn btn-primary" th:text="${student.id == null ? 'Thêm mới' : 'Cập nhật'}"></button>
+                <a href="/students" class="btn btn-secondary">Hủy</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

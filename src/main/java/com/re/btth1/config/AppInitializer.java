@@ -1,21 +1,20 @@
 package com.re.btth1.config;
 
-import org.jspecify.annotations.Nullable;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 public class AppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
     @Override
-    protected Class<?> @Nullable [] getRootConfigClasses() {
+    protected Class<?>[] getRootConfigClasses() {
         return new Class[0];
     }
 
     @Override
-    protected Class<?> @Nullable [] getServletConfigClasses() {
-        return new Class[]{AppInitializer.class};
+    protected Class<?>[] getServletConfigClasses() {
+        return new Class[]{AppConfiguration.class};
     }
 
     @Override
     protected String[] getServletMappings() {
-        return new String[0];
+        return new String[]{"/"};
     }
 }
